@@ -47,6 +47,10 @@ module PoiseLanguages
       #   URL to download from.
       #   @return [String]
       attribute(:source, kind_of: String, required: true)
+      # @!attribute checksum
+      #   The check sum of the source file
+      #   @return [String, nil]
+      attribute(:checksum, kind_of: [String, NilClass])
       # @!attribute strip_components
       #   Value to pass to tar --strip-components.
       #   @return [String, Integer, nil]
@@ -107,6 +111,7 @@ module PoiseLanguages
           owner 0
           group 0
           mode '644'
+          checksum new_resource.checksum if new_resource.checksum
           notifies :unpack, unpack_resource, :immediately if ::File.exist?(new_resource.path)
           retries new_resource.download_retries
         end
